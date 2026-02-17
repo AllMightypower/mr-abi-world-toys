@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MR ABI WORLD</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
+
+body{
+background:radial-gradient(circle at top,#ffffff 0%,#f2f4f8 40%,#e9ecf3 100%);
+min-height:100vh;
+}
+
+/* HEADER */
+.top-header{
+background:linear-gradient(135deg,#0f0f12,#1b1e27);
+padding:15px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:15px;
+}
+
+.logo-box img{
+height:80px;
+filter:drop-shadow(0 0 12px rgba(255,165,0,0.9));
+}
+
+@media(max-width:600px){
+.logo-box img{height:60px;}
+}
+
+.search-box{
+padding:10px 15px;
+border-radius:25px;
+border:none;
+width:260px;
+}
+
+.header-order-btn{
+background:linear-gradient(135deg,#ff416c,#ff8a00);
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:25px;
+cursor:pointer;
+font-weight:bold;
+}
+
+/* PRODUCTS */
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+padding:30px;
+}
+
+.product-card{
+background:white;
+border-radius:18px;
+padding:18px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* SLIDER */
+.slider{
+position:relative;
+width:100%;
+aspect-ratio:4/3;
+overflow:hidden;
+border-radius:16px;
+background:#f8f8f8;
+}
+
+.slides{
+position:relative;
+width:100%;
+height:100%;
+}
+
+.slides img{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:contain;
+top:0;
+left:0;
+opacity:0;
+transition:opacity 0.5s ease;
+}
+
+.slides img.active{
+opacity:1;
+}
+
+/* DOTS */
+.dots{
+position:absolute;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:6px;
+}
+
+.dots span{
+width:8px;
+height:8px;
+background:white;
+opacity:0.5;
+border-radius:50%;
+cursor:pointer;
+}
+
+.dots span.active{
+opacity:1;
+background:#ff416c;
+}
+
+.price{
+color:#ff416c;
+font-weight:bold;
+margin:10px 0;
+font-size:18px;
+}
+
+.rating{color:gold;margin-bottom:5px;}
+.cod{color:green;font-size:13px;margin-bottom:8px;}
+
+.qty-box{
+display:flex;
+justify-content:center;
+align-items:center;
+margin:12px 0;
+}
+
+.qty-box button{
+width:32px;
+height:32px;
+border-radius:50%;
+border:none;
+background:linear-gradient(135deg,#ff416c,#ff8a00);
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+.qty{margin:0 15px;font-weight:bold;font-size:18px;}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+margin:5px;
+}
+
+.buy-now{
+background:#25D366;
+color:white;
+}
+
+/* TRUST SECTION */
+.trust{
+text-align:center;
+padding:40px;
+background:white;
+margin:30px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* CHECKOUT MODAL */
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+.modal-content{
+background:white;
+padding:25px;
+width:340px;
+border-radius:20px;
+text-align:center;
+}
+
+.modal-content input,
+.modal-content textarea{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+.close-btn{
+background:gray;
+color:white;
+}
+
+/* FLOATING WHATSAPP */
+.whatsapp-float{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+font-size:26px;
+width:55px;
+height:55px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+</style>
+</head>
+
+<body>
+
+<header class="top-header">
+<div class="logo-box">
+<img src="logo.png">
+</div>
+
+<input type="text" id="searchBox" placeholder="Search products…" onkeyup="searchProducts()" class="search-box">
+
+<button class="header-order-btn" onclick="openSummary()">
+🛒 Order (<span id="cartCount">0</span>)
+</button>
+</header>
+
+<section class="products">
+
+<!-- PRODUCT 1 -->
+<div class="product-card">
+<div class="slider">
+<div class="slides">
+<img src="panda1.jpeg">
+<img src="panda2.jpeg">
+</div>
+<div class="dots"></div>
+</div>
+
+<h3>Panda Light Lamp</h3>
+<p class="price">₹180</p>
+<div class="cod">Cash on Delivery Available</div>
+
+<div class="qty-box">
+<button onclick="changeQty(this,-1)">−</button>
+<span class="qty">1</span>
+<button onclick="changeQty(this,1)">+</button>
+</div>
+
+<button onclick="addToCart(this,'Panda Light Lamp',180)">Add to Cart</button>
+<button class="buy-now" onclick="buyNow('Panda Light Lamp',180)">Buy Now</button>
+</div>
+
+<!-- PRODUCT 2 -->
+<div class="product-card">
+<div class="slider">
+<div class="slides">
+<img src="teddy.jpeg">
+<img src="teddy1.jpeg">
+<img src="teddy2.jpeg">
+<img src="teddy3.jpeg">
+</div>
+<div class="dots"></div>
+</div>
+<h3>LED Lamp</h3>
+<p class="price">₹299</p>
+<div class="cod">Cash on Delivery Available</div>
+
+<div class="qty-box">
+<button onclick="changeQty(this,-1)">−</button>
+<span class="qty">1</span>
+<button onclick="changeQty(this,1)">+</button>
+</div>
+
+<button onclick="addToCart(this,'LED Lamp',299)">Add to Cart</button>
+<button class="buy-now" onclick="buyNow('LED Lamp',299)">Buy Now</button>
+</div>
+
+</section>
+
+<section class="trust">
+<h2>Why Buy From Us?</h2>
+<p>✅ Fast Shipping</p>
+<p>✅ Quality Tested</p>
+<p>✅ 24/7 WhatsApp Support</p>
+</section>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkoutModal" class="modal">
+<div class="modal-content">
+<h3>Enter Delivery Details</h3>
+<input id="custName" placeholder="Full Name">
+<input id="custPhone" placeholder="Mobile Number">
+<textarea id="custAddress" placeholder="Delivery Address"></textarea>
+<button onclick="sendToWhatsApp()">Confirm Order</button>
+<button class="close-btn" onclick="closeCheckout()">Cancel</button>
+</div>
+</div>
+
+<a href="https://wa.me/918903138862" class="whatsapp-float" target="_blank">💬</a>
+
+<script>
+
+let cart=[];
+let count=0;
+let singleProduct=null;
+
+function changeQty(btn,change){
+let q=btn.parentElement.querySelector(".qty");
+q.innerText=Math.max(1,parseInt(q.innerText)+change);
+}
+
+function addToCart(btn,name,price){
+let qty=parseInt(btn.parentElement.querySelector(".qty").innerText);
+cart.push({name,price,qty});
+count+=qty;
+cartCount.innerText=count;
+}
+
+function openSummary(){
+if(!cart.length){alert("Cart is empty");return;}
+checkoutModal.style.display="flex";
+}
+
+function buyNow(name,price){
+singleProduct={name,price,qty:1};
+checkoutModal.style.display="flex";
+}
+
+function closeCheckout(){
+checkoutModal.style.display="none";
+}
+
+function sendToWhatsApp(){
+
+let name=custName.value.trim();
+let phone=custPhone.value.trim();
+let address=custAddress.value.trim();
+
+if(!name||!phone||!address){
+alert("Please fill all details");
+return;
+}
+
+let text=`NEW ORDER – MR ABI WORLD
+
+Customer Name: ${name}
+Phone: ${phone}
+Address: ${address}
+
+Order Details:
+`;
+
+let total=0;
+
+if(singleProduct){
+let t=singleProduct.price*singleProduct.qty;
+total+=t;
+text+=`1. ${singleProduct.name} x ${singleProduct.qty} = ₹${t}\n`;
+}else{
+cart.forEach((item,i)=>{
+let t=item.price*item.qty;
+total+=t;
+text+=`${i+1}. ${item.name} x ${item.qty} = ₹${t}\n`;
+});
+}
+
+text+=`\nTotal: ₹${total}`;
+
+window.location.href=`https://wa.me/918903138862?text=${encodeURIComponent(text)}`;
+
+cart=[];
+singleProduct=null;
+count=0;
+cartCount.innerText=0;
+checkoutModal.style.display="none";
+}
+
+/* SEARCH */
+function searchProducts(){
+let input=searchBox.value.toLowerCase();
+document.querySelectorAll(".product-card").forEach(card=>{
+let name=card.querySelector("h3").innerText.toLowerCase();
+card.style.display=name.includes(input)?"":"none";
+});
+}
+
+/* SLIDER */
+document.querySelectorAll(".slider").forEach(slider=>{
+const images=slider.querySelectorAll(".slides img");
+const dotsContainer=slider.querySelector(".dots");
+let index=0;
+images[0].classList.add("active");
+
+images.forEach((_,i)=>{
+let dot=document.createElement("span");
+if(i===0)dot.classList.add("active");
+dot.addEventListener("click",()=>goToSlide(i));
+dotsContainer.appendChild(dot);
+});
+
+const dots=dotsContainer.querySelectorAll("span");
+
+function update(){
+images.forEach(img=>img.classList.remove("active"));
+dots.forEach(dot=>dot.classList.remove("active"));
+images[index].classList.add("active");
+dots[index].classList.add("active");
+}
+
+function goToSlide(i){index=i;update();}
+function nextSlide(){index=(index+1)%images.length;update();}
+
+setInterval(nextSlide,3000);
+
+let startX=0;
+slider.addEventListener("touchstart",e=>{
+startX=e.touches[0].clientX;
+});
+slider.addEventListener("touchend",e=>{
+let diff=e.changedTouches[0].clientX-startX;
+if(diff>50){index=(index-1+images.length)%images.length;update();}
+if(diff<-50){nextSlide();}
+});
+});
+
+</script>
+
+</body>
+</html>
