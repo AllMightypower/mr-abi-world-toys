@@ -17,20 +17,35 @@ overflow-x:hidden;
 /* HEADER */
 .top-header{
 background:linear-gradient(135deg,#0f0f12,#1b1e27);
-padding:15px 25px;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:15px;
-flex-wrap:wrap;
+padding:20px;
+text-align:center;
+position:relative;
 }
 
-.logo-box img{
-height:70px;
-filter:drop-shadow(0 0 12px rgba(255,165,0,0.9));
+/* 🔥 GLOWING TITLE */
+.glow-title{
+font-size:42px;
+font-weight:bold;
+color:#fff;
+letter-spacing:3px;
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+0%{
+text-shadow:0 0 10px #ff8a00,
+0 0 20px #ff416c,
+0 0 30px #ff4d4d;
+}
+100%{
+text-shadow:0 0 20px #25D366,
+0 0 30px #00c6ff,
+0 0 40px #ffcc00;
+}
 }
 
 .search-box{
+margin-top:15px;
 padding:10px 15px;
 border-radius:25px;
 border:none;
@@ -84,7 +99,6 @@ transition:opacity 0.6s ease;
 opacity:1;
 }
 
-/* PRICE */
 .price{
 color:#ff416c;
 font-weight:bold;
@@ -98,7 +112,6 @@ font-size:13px;
 margin-bottom:8px;
 }
 
-/* BUY BUTTON */
 .buy-now{
 background:#25D366;
 color:white;
@@ -110,7 +123,7 @@ margin-top:10px;
 font-weight:bold;
 }
 
-/* POPUP FORM */
+/* POPUP */
 .popup{
 display:none;
 position:fixed;
@@ -135,7 +148,7 @@ from{transform:scale(0.8);opacity:0;}
 to{transform:scale(1);opacity:1;}
 }
 
-.popup input, .popup textarea{
+.popup input,.popup textarea{
 width:100%;
 padding:10px;
 margin:8px 0;
@@ -180,20 +193,17 @@ to{transform:translateY(110vh) rotate(720deg);}
 <body>
 
 <header class="top-header">
-<div class="logo-box">
-<img src="logo.png">
-</div>
+<h1 class="glow-title">MR ABI WORLD</h1>
 <input type="text" id="searchBox" placeholder="Search products…" class="search-box">
 </header>
 
 <section class="products" id="productContainer"></section>
 
-<!-- ORDER POPUP -->
 <div class="popup" id="orderPopup">
 <div class="popup-content">
 <h3>Complete Your Order</h3>
-<input type="text" id="customerName" placeholder="Your Name" required>
-<input type="tel" id="customerPhone" placeholder="Phone Number" required>
+<input type="text" id="customerName" placeholder="Your Name">
+<input type="tel" id="customerPhone" placeholder="Phone Number">
 <textarea id="customerAddress" placeholder="Delivery Address" rows="3"></textarea>
 <button onclick="sendToWhatsApp()">Place Order on WhatsApp</button>
 <button class="close-btn" onclick="closePopup()">Cancel</button>
@@ -219,21 +229,9 @@ window.onload=launchConfetti;
 
 /* PRODUCTS */
 const products=[
-{
-name:"Mini Panda Light",
-price:120,
-images:["panda1.jpeg","panda2.jpeg"]
-},
-{
-name:"Breathing Teddy",
-price:550,
-images:["teddy.jpeg","teddy1.jpeg","teddy2.jpeg","teddy3.jpeg"]
-},
-{
-name:"Talking Bird",
-price:350,
-images:["talk bird 1.jpeg","talk bird 2.jpeg"]
-}
+{name:"Mini Panda Light",price:120,images:["panda1.jpeg","panda2.jpeg"]},
+{name:"Breathing Teddy",price:550,images:["teddy.jpeg","teddy1.jpeg","teddy2.jpeg"]},
+{name:"Talking Bird",price:350,images:["talk bird 1.jpeg","talk bird 2.jpeg"]}
 ];
 
 let selectedProduct=null;
@@ -246,20 +244,14 @@ let imagesHTML="";
 product.images.forEach((img,i)=>{
 imagesHTML+=`<img src="${img}" class="${i===0?'active':''}">`;
 });
-
 container.innerHTML+=`
 <div class="product-card">
-<div class="slider">
-<div class="slides">
-${imagesHTML}
-</div>
-</div>
+<div class="slider"><div class="slides">${imagesHTML}</div></div>
 <h3>${product.name}</h3>
 <p class="price">₹${product.price}</p>
 <div class="cod">Online Payment</div>
 <button class="buy-now" onclick='openPopup("${product.name}",${product.price})'>Buy Now</button>
-</div>
-`;
+</div>`;
 });
 initSliders();
 }
@@ -283,7 +275,6 @@ function openPopup(name,price){
 selectedProduct={name,price};
 document.getElementById("orderPopup").style.display="flex";
 }
-
 function closePopup(){
 document.getElementById("orderPopup").style.display="none";
 }
@@ -294,16 +285,15 @@ let name=document.getElementById("customerName").value;
 let phone=document.getElementById("customerPhone").value;
 let address=document.getElementById("customerAddress").value;
 
-if(!name || !phone || !address){
+if(!name||!phone||!address){
 alert("Please fill all details");
 return;
 }
 
 let message=`🛒 *New Order*%0A%0A📦 Product: ${selectedProduct.name}%0A💰 Price: ₹${selectedProduct.price}%0A%0A👤 Name: ${name}%0A📞 Phone: ${phone}%0A🏠 Address: ${address}`;
+let whatsappNumber="91XXXXXXXXXX"; // replace
 
-let whatsappNumber="918903138862"; // Replace with your number
 window.open(`https://wa.me/${whatsappNumber}?text=${message}`,"_blank");
-
 closePopup();
 }
 
