@@ -107,28 +107,60 @@ border:none;
 border-radius:25px;
 cursor:pointer;
 margin-top:10px;
+font-weight:bold;
 }
 
-/* MODAL */
-.modal{
+/* POPUP FORM */
+.popup{
 display:none;
 position:fixed;
 inset:0;
 background:rgba(0,0,0,0.6);
 justify-content:center;
 align-items:center;
-z-index:1000;
+z-index:2000;
 }
 
-.modal-content{
+.popup-content{
 background:white;
 padding:25px;
 width:340px;
 border-radius:20px;
 text-align:center;
+animation:scaleIn 0.3s ease;
 }
 
-/* 🎉 CONFETTI */
+@keyframes scaleIn{
+from{transform:scale(0.8);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+.popup input, .popup textarea{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+.popup button{
+background:#25D366;
+color:white;
+padding:10px;
+border:none;
+border-radius:20px;
+width:100%;
+margin-top:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.close-btn{
+background:#ff4d4d !important;
+margin-top:8px;
+}
+
+/* CONFETTI */
 .confetti{
 position:fixed;
 width:8px;
@@ -140,9 +172,7 @@ animation:fall linear forwards;
 }
 
 @keyframes fall{
-to{
-transform:translateY(110vh) rotate(720deg);
-}
+to{transform:translateY(110vh) rotate(720deg);}
 }
 </style>
 </head>
@@ -158,15 +188,23 @@ transform:translateY(110vh) rotate(720deg);
 
 <section class="products" id="productContainer"></section>
 
+<!-- ORDER POPUP -->
+<div class="popup" id="orderPopup">
+<div class="popup-content">
+<h3>Complete Your Order</h3>
+<input type="text" id="customerName" placeholder="Your Name" required>
+<input type="tel" id="customerPhone" placeholder="Phone Number" required>
+<textarea id="customerAddress" placeholder="Delivery Address" rows="3"></textarea>
+<button onclick="sendToWhatsApp()">Place Order on WhatsApp</button>
+<button class="close-btn" onclick="closePopup()">Cancel</button>
+</div>
+</div>
+
 <script>
 
-/* ===============================
-   🎉 CONFETTI EFFECT
-================================= */
-
+/* CONFETTI */
 function launchConfetti(){
 const colors=["#ff4d4d","#ffcc00","#33cc33","#3399ff","#ff66cc","#ff8a00"];
-
 for(let i=0;i<80;i++){
 let conf=document.createElement("div");
 conf.classList.add("confetti");
@@ -174,18 +212,13 @@ conf.style.left=Math.random()*100+"vw";
 conf.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
 conf.style.animationDuration=(Math.random()*3+2)+"s";
 document.body.appendChild(conf);
-
 setTimeout(()=>conf.remove(),5000);
 }
 }
-
 window.onload=launchConfetti;
 
-/* ===============================
-   PRODUCT DATABASE
-================================= */
-
-const products = [
+/* PRODUCTS */
+const products=[
 {
 name:"Mini Panda Light",
 price:120,
@@ -203,10 +236,11 @@ images:["talk bird 1.jpeg","talk bird 2.jpeg"]
 }
 ];
 
+let selectedProduct=null;
+
 function loadProducts(){
 const container=document.getElementById("productContainer");
 container.innerHTML="";
-
 products.forEach(product=>{
 let imagesHTML="";
 product.images.forEach((img,i)=>{
@@ -220,39 +254,60 @@ container.innerHTML+=`
 ${imagesHTML}
 </div>
 </div>
-
 <h3>${product.name}</h3>
 <p class="price">₹${product.price}</p>
 <div class="cod">Online Payment</div>
-
-<button class="buy-now">Buy Now</button>
+<button class="buy-now" onclick='openPopup("${product.name}",${product.price})'>Buy Now</button>
 </div>
 `;
 });
-
 initSliders();
 }
-
 loadProducts();
 
-/* AUTO SLIDER */
-
+/* SLIDER */
 function initSliders(){
 document.querySelectorAll(".slider").forEach(slider=>{
 let images=slider.querySelectorAll("img");
 let current=0;
-
 setInterval(()=>{
 images[current].classList.remove("active");
 current=(current+1)%images.length;
 images[current].classList.add("active");
 },3000);
-
 });
 }
 
-/* SEARCH */
+/* POPUP */
+function openPopup(name,price){
+selectedProduct={name,price};
+document.getElementById("orderPopup").style.display="flex";
+}
 
+function closePopup(){
+document.getElementById("orderPopup").style.display="none";
+}
+
+/* WHATSAPP */
+function sendToWhatsApp(){
+let name=document.getElementById("customerName").value;
+let phone=document.getElementById("customerPhone").value;
+let address=document.getElementById("customerAddress").value;
+
+if(!name || !phone || !address){
+alert("Please fill all details");
+return;
+}
+
+let message=`🛒 *New Order*%0A%0A📦 Product: ${selectedProduct.name}%0A💰 Price: ₹${selectedProduct.price}%0A%0A👤 Name: ${name}%0A📞 Phone: ${phone}%0A🏠 Address: ${address}`;
+
+let whatsappNumber="918903138862"; // Replace with your number
+window.open(`https://wa.me/${whatsappNumber}?text=${message}`,"_blank");
+
+closePopup();
+}
+
+/* SEARCH */
 document.getElementById("searchBox").addEventListener("keyup",function(){
 let input=this.value.toLowerCase();
 document.querySelectorAll(".product-card").forEach(card=>{
