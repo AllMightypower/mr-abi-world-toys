@@ -17,14 +17,27 @@ overflow-x:hidden;
 /* HEADER */
 .top-header{
 background:linear-gradient(135deg,#0f0f12,#1b1e27);
-padding:20px;
-text-align:center;
-position:relative;
+padding:15px 25px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+flex-wrap:wrap;
 }
 
-/* 🔥 GLOWING TITLE */
+/* LEFT LOGO */
+.logo-box img{
+height:60px;
+filter:drop-shadow(0 0 10px #ff8a00);
+}
+
+/* CENTER TITLE */
+.title-container{
+flex:1;
+text-align:center;
+}
+
 .glow-title{
-font-size:42px;
+font-size:38px;
 font-weight:bold;
 color:#fff;
 letter-spacing:3px;
@@ -44,12 +57,12 @@ text-shadow:0 0 20px #25D366,
 }
 }
 
+/* RIGHT SEARCH */
 .search-box{
-margin-top:15px;
 padding:10px 15px;
 border-radius:25px;
 border:none;
-width:260px;
+width:220px;
 }
 
 /* PRODUCTS */
@@ -187,18 +200,45 @@ animation:fall linear forwards;
 @keyframes fall{
 to{transform:translateY(110vh) rotate(720deg);}
 }
+
+/* MOBILE RESPONSIVE */
+@media(max-width:768px){
+.top-header{
+flex-direction:column;
+gap:10px;
+}
+.title-container{
+order:2;
+}
+.search-box{
+width:100%;
+}
+}
 </style>
 </head>
 
 <body>
 
 <header class="top-header">
+
+<!-- LEFT LOGO -->
+<div class="logo-box">
+<img src="logo.png" alt="Logo">
+</div>
+
+<!-- CENTER TITLE -->
+<div class="title-container">
 <h1 class="glow-title">MR ABI WORLD</h1>
+</div>
+
+<!-- RIGHT SEARCH -->
 <input type="text" id="searchBox" placeholder="Search products…" class="search-box">
+
 </header>
 
 <section class="products" id="productContainer"></section>
 
+<!-- ORDER POPUP -->
 <div class="popup" id="orderPopup">
 <div class="popup-content">
 <h3>Complete Your Order</h3>
@@ -281,7 +321,6 @@ document.getElementById("orderPopup").style.display="none";
 
 /* WHATSAPP */
 function sendToWhatsApp(){
-
 let name=document.getElementById("customerName").value;
 let phone=document.getElementById("customerPhone").value;
 let address=document.getElementById("customerAddress").value;
@@ -291,7 +330,7 @@ alert("Please fill all details");
 return;
 }
 
-let message = `🛒 New Order
+let message = `New Order
 
 Product: ${selectedProduct.name}
 Price: ₹${selectedProduct.price}
@@ -300,7 +339,7 @@ Name: ${name}
 Phone: ${phone}
 Address: ${address}`;
 
-let whatsappNumber="918903138862"; // ← replace with your real number
+let whatsappNumber="918903138862";
 
 let encodedMessage = encodeURIComponent(message);
 
@@ -322,4 +361,3 @@ card.style.display=name.includes(input)?"":"none";
 
 </body>
 </html>
-
