@@ -281,6 +281,7 @@ document.getElementById("orderPopup").style.display="none";
 
 /* WHATSAPP */
 function sendToWhatsApp(){
+
 let name=document.getElementById("customerName").value;
 let phone=document.getElementById("customerPhone").value;
 let address=document.getElementById("customerAddress").value;
@@ -290,10 +291,21 @@ alert("Please fill all details");
 return;
 }
 
-let message=`🛒 *New Order*%0A%0A📦 Product: ${selectedProduct.name}%0A💰 Price: ₹${selectedProduct.price}%0A%0A👤 Name: ${name}%0A📞 Phone: ${phone}%0A🏠 Address: ${address}`;
-let whatsappNumber="91XXXXXXXXXX"; // replace
+let message = `🛒 New Order
 
-window.open(`https://wa.me/${whatsappNumber}?text=${message}`,"_blank");
+Product: ${selectedProduct.name}
+Price: ₹${selectedProduct.price}
+
+Name: ${name}
+Phone: ${phone}
+Address: ${address}`;
+
+let whatsappNumber="918903138862"; // ← replace with your real number
+
+let encodedMessage = encodeURIComponent(message);
+
+window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`,"_blank");
+
 closePopup();
 }
 
@@ -310,3 +322,4 @@ card.style.display=name.includes(input)?"":"none";
 
 </body>
 </html>
+
