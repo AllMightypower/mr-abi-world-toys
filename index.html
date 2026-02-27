@@ -6,7 +6,12 @@
 <title>MR ABI WORLD</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial,sans-serif;
+}
 
 body{
 background:radial-gradient(circle at top,#ffffff 0%,#f2f4f8 40%,#e9ecf3 100%);
@@ -14,50 +19,52 @@ min-height:100vh;
 overflow-x:hidden;
 }
 
-/* HEADER */
+/* ===== CONTAINER ===== */
+.container{
+max-width:1400px;
+margin:auto;
+padding:0 15px;
+}
+
+/* ===== HEADER ===== */
 .top-header{
+position:sticky;
+top:0;
+z-index:1000;
 background:linear-gradient(135deg,#0f0f12,#1b1e27);
-padding:15px 25px;
+padding:15px 0;
+}
+
+.header-flex{
 display:flex;
 align-items:center;
 justify-content:space-between;
 flex-wrap:wrap;
 }
 
-/* LEFT LOGO */
 .logo-box img{
-height:60px;
-filter:drop-shadow(0 0 10px #ff8a00);
+height:55px;
+filter:drop-shadow(0 0 8px #ff8a00);
 }
 
-/* CENTER TITLE */
 .title-container{
 flex:1;
 text-align:center;
 }
 
 .glow-title{
-font-size:38px;
 font-weight:bold;
 color:#fff;
 letter-spacing:3px;
 animation:glow 2s infinite alternate;
+font-size:clamp(22px,4vw,38px);
 }
 
 @keyframes glow{
-0%{
-text-shadow:0 0 10px #ff8a00,
-0 0 20px #ff416c,
-0 0 30px #ff4d4d;
-}
-100%{
-text-shadow:0 0 20px #25D366,
-0 0 30px #00c6ff,
-0 0 40px #ffcc00;
-}
+0%{text-shadow:0 0 10px #ff8a00,0 0 20px #ff416c;}
+100%{text-shadow:0 0 20px #25D366,0 0 30px #00c6ff;}
 }
 
-/* RIGHT SEARCH */
 .search-box{
 padding:10px 15px;
 border-radius:25px;
@@ -65,36 +72,64 @@ border:none;
 width:220px;
 }
 
-/* PRODUCTS */
+/* ===== PROFESSIONAL GRID SYSTEM ===== */
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:25px;
-padding:30px;
+padding:40px 0;
 }
 
+/* Mobile */
+@media (max-width:575px){
+.products{ grid-template-columns:1fr; }
+}
+
+/* Large Mobile */
+@media (min-width:576px) and (max-width:767px){
+.products{ grid-template-columns:repeat(2,1fr); }
+}
+
+/* Tablet */
+@media (min-width:768px) and (max-width:991px){
+.products{ grid-template-columns:repeat(3,1fr); }
+}
+
+/* Laptop */
+@media (min-width:992px) and (max-width:1199px){
+.products{ grid-template-columns:repeat(4,1fr); }
+}
+
+/* Desktop */
+@media (min-width:1200px){
+.products{ grid-template-columns:repeat(5,1fr); }
+}
+
+/* ===== PRODUCT CARD ===== */
 .product-card{
 background:white;
 border-radius:18px;
 padding:18px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
 text-align:center;
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
+box-shadow:0 8px 20px rgba(0,0,0,0.12);
 transition:0.3s ease;
 }
 
 .product-card:hover{
-transform:translateY(-6px);
-box-shadow:0 15px 35px rgba(0,0,0,0.2);
+transform:translateY(-5px);
+box-shadow:0 15px 30px rgba(0,0,0,0.18);
 }
 
-/* SLIDER */
 .slider{
 position:relative;
 width:100%;
 aspect-ratio:4/3;
 overflow:hidden;
-border-radius:16px;
+border-radius:14px;
 background:#f8f8f8;
+margin-bottom:10px;
 }
 
 .slides img{
@@ -108,9 +143,7 @@ opacity:0;
 transition:opacity 0.6s ease;
 }
 
-.slides img.active{
-opacity:1;
-}
+.slides img.active{ opacity:1; }
 
 .price{
 color:#ff416c;
@@ -132,11 +165,15 @@ padding:10px 18px;
 border:none;
 border-radius:25px;
 cursor:pointer;
-margin-top:10px;
 font-weight:bold;
+transition:0.3s;
 }
 
-/* POPUP */
+.buy-now:hover{
+background:#1ebe5d;
+}
+
+/* ===== POPUP ===== */
 .popup{
 display:none;
 position:fixed;
@@ -150,15 +187,10 @@ z-index:2000;
 .popup-content{
 background:white;
 padding:25px;
-width:340px;
+width:90%;
+max-width:340px;
 border-radius:20px;
 text-align:center;
-animation:scaleIn 0.3s ease;
-}
-
-@keyframes scaleIn{
-from{transform:scale(0.8);opacity:0;}
-to{transform:scale(1);opacity:1;}
 }
 
 .popup input,.popup textarea{
@@ -183,32 +215,13 @@ font-weight:bold;
 
 .close-btn{
 background:#ff4d4d !important;
-margin-top:8px;
 }
 
-/* CONFETTI */
-.confetti{
-position:fixed;
-width:8px;
-height:14px;
-top:-20px;
-z-index:9999;
-opacity:0.8;
-animation:fall linear forwards;
-}
-
-@keyframes fall{
-to{transform:translateY(110vh) rotate(720deg);}
-}
-
-/* MOBILE RESPONSIVE */
+/* Mobile Header Fix */
 @media(max-width:768px){
-.top-header{
+.header-flex{
 flex-direction:column;
 gap:10px;
-}
-.title-container{
-order:2;
 }
 .search-box{
 width:100%;
@@ -220,25 +233,25 @@ width:100%;
 <body>
 
 <header class="top-header">
+<div class="container header-flex">
 
-<!-- LEFT LOGO -->
 <div class="logo-box">
 <img src="logo.png" alt="Logo">
 </div>
 
-<!-- CENTER TITLE -->
 <div class="title-container">
 <h1 class="glow-title">MR ABI WORLD</h1>
 </div>
 
-<!-- RIGHT SEARCH -->
 <input type="text" id="searchBox" placeholder="Search products…" class="search-box">
 
+</div>
 </header>
 
+<div class="container">
 <section class="products" id="productContainer"></section>
+</div>
 
-<!-- ORDER POPUP -->
 <div class="popup" id="orderPopup">
 <div class="popup-content">
 <h3>Complete Your Order</h3>
@@ -251,21 +264,6 @@ width:100%;
 </div>
 
 <script>
-
-/* CONFETTI */
-function launchConfetti(){
-const colors=["#ff4d4d","#ffcc00","#33cc33","#3399ff","#ff66cc","#ff8a00"];
-for(let i=0;i<80;i++){
-let conf=document.createElement("div");
-conf.classList.add("confetti");
-conf.style.left=Math.random()*100+"vw";
-conf.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
-conf.style.animationDuration=(Math.random()*3+2)+"s";
-document.body.appendChild(conf);
-setTimeout(()=>conf.remove(),5000);
-}
-}
-window.onload=launchConfetti;
 
 /* PRODUCTS */
 const products=[
@@ -297,7 +295,6 @@ initSliders();
 }
 loadProducts();
 
-/* SLIDER */
 function initSliders(){
 document.querySelectorAll(".slider").forEach(slider=>{
 let images=slider.querySelectorAll("img");
@@ -310,16 +307,15 @@ images[current].classList.add("active");
 });
 }
 
-/* POPUP */
 function openPopup(name,price){
 selectedProduct={name,price};
 document.getElementById("orderPopup").style.display="flex";
 }
+
 function closePopup(){
 document.getElementById("orderPopup").style.display="none";
 }
 
-/* WHATSAPP */
 function sendToWhatsApp(){
 let name=document.getElementById("customerName").value;
 let phone=document.getElementById("customerPhone").value;
@@ -330,7 +326,7 @@ alert("Please fill all details");
 return;
 }
 
-let message = `New Order
+let message=`New Order
 
 Product: ${selectedProduct.name}
 Price: ₹${selectedProduct.price}
@@ -339,16 +335,13 @@ Name: ${name}
 Phone: ${phone}
 Address: ${address}`;
 
+let encodedMessage=encodeURIComponent(message);
 let whatsappNumber="918903138862";
 
-let encodedMessage = encodeURIComponent(message);
-
 window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`,"_blank");
-
 closePopup();
 }
 
-/* SEARCH */
 document.getElementById("searchBox").addEventListener("keyup",function(){
 let input=this.value.toLowerCase();
 document.querySelectorAll(".product-card").forEach(card=>{
